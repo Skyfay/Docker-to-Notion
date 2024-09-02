@@ -25,13 +25,8 @@ class Container:
             image_info = subprocess.check_output(["docker", "inspect", image_name])
             image_info_json = json.loads(image_info)
 
-            # Lokalen Digest extrahieren
             local_digest = image_info_json[0]['RepoDigests'][0].split('@')[1]
-
-            # Lokalen Tag extrahieren
             local_tag = image_info_json[0]['RepoTags'][0].split(':')[1]
-
-            # Lokale Version extrahieren
             local_version = image_info_json[0]['Config']['Labels'].get("org.opencontainers.image.version", "unknown")
 
             print("Debug | Local Digest: " + local_digest + " Local Tag: " + local_tag + " Local Version: " + local_version )
