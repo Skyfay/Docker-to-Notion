@@ -39,7 +39,7 @@ class Notion:
 
             # Bis hier sollte der code in Ordnung sein. Nun folgt die neue Logik mit vergleich zwischen local und
             # remote digest, sowie local und remote version. Wenn die unterschiedlich sind, dann ist es ein update.
-            # Notion soll dann auch anzeigen, was die remote version ist jedoch nur wenn es ein Update gibt. 
+            # Notion soll dann auch anzeigen, was die remote version ist jedoch nur wenn es ein Update gibt.
 
             local_digest, local_tag, local_version = Container().get_local_image_digest()
             remote_digest, remote_version = Container().get_remote_image_digest()
