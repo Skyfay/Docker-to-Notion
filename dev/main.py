@@ -1,4 +1,5 @@
 from container import Container
+from notion import Notion
 
 def main():
 
@@ -8,6 +9,7 @@ def main():
 
     # Worker
     Container().get_running_containers()
+    Notion().update_notion_database(containers)
 
 
 if __name__ == "__main__":
