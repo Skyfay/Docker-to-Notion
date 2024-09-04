@@ -8,7 +8,7 @@ def main():
     # Container().get_local_image_digest(image_name="docker.io/vaultwarden/server:latest")
 
     # Worker
-    Container().get_running_containers()
+    containers = Container().get_running_containers()
     Notion().update_notion_database(containers)
 
 
