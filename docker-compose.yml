@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    image: docknotion
+    container_name: docknotion_app
+    environment:
+      - NOTION_AUTH_TOKEN=your_notion_token
+      - NOTION_DATABASE_ID=your_database_id
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped

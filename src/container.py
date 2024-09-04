@@ -1,5 +1,7 @@
 import docker
 import requests
+import subprocess
+import json
 
 class Container:
     def __init__(self) -> None:
@@ -19,24 +21,32 @@ class Container:
 
     def get_local_image_digest(self,image_name: str) -> str:
         try:
-            image = self.docker.images.get(image_name)
-            return image.attrs['RepoDigests'][0].split('@')[1]
+            # Docker-Inspektionsinformationen abrufen
+            image_info = subprocess.check_output(["docker", "inspect", image_name])
+            image_info_json = json.loads(image_info)
+
+            local_digest = image_info_json[0]['RepoDigests'][0].split('@')[1]
+            local_tag = image_info_json[0]['RepoTags'][0].split(':')[1]
+            local_version = image_info_json[0]['Config']['Labels'].get("org.opencontainers.image.version", "unknown")
+
+            print("Debug | Local Digest: " + local_digest + " Local Tag: " + local_tag + " Local Version: " + local_version )
+            return local_digest, local_tag, local_version
+
         except Exception as e:
-            print(f"Error fetching local digest for {image_name}: {e}")
-            return None
+            print(f"Error fetching local image info: {e}")
+            return None, None, None
 
 
-    def get_remote_image_info(self, repo: str, tag: str = "latest") -> tuple[str, str]:
-        if len(repo.split("/")) == 1:
-            repo = f"library/{repo}"
+    def get_remote_image_info(self,image_name: str) -> str:
+        try:
+            remote_digest = subprocess.check_output(["crane", "digest", image_name]).decode().strip()
 
-        response = requests.get(f"https://registry.hub.docker.com/v2/repositories/{repo}/tags/{tag}")
+            remote_version_info = subprocess.check_output(["crane", "config", image_name])
+            remote_version = json.loads(remote_version_info)['config']['Labels'].get("org.opencontainers.image.version",
+                                                                                 "unknown")
+            print("Debug | Remote Digest: " + remote_digest + " Remote Version: " + remote_version)
+            return remote_digest, remote_version
 
-        if response.status_code == 200:
-            data = response.json()
-            digest = data['images'][0]['digest']
-            last_updated = data['last_updated']
-            return digest, last_updated
-        else:
-            print(f"Error fetching info from Docker Hub for {repo}:{tag} - Status code: {response.status_code}")
+        except Exception as e:
+            print(f"Error fetching remote image info: {e}")
             return None, None
