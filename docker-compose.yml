@@ -2,11 +2,12 @@ version: '3.8'
 
 services:
   app:
-    image: docknotion
-    container_name: docknotion_app
+    image: skyfay/docker-to-notion:latest
+    container_name: docker-to-notion
     environment:
       - NOTION_AUTH_TOKEN=your_notion_token
       - NOTION_DATABASE_ID=your_database_id
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/hostname:/etc/hostname:ro
     restart: unless-stopped

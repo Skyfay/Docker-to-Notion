@@ -50,3 +50,23 @@ class Container:
         except Exception as e:
             print(f"Error fetching remote image info: {e}")
             return None, None
+
+    def get_remote_image_latest(self, image_name: str) -> str:
+        try:
+            # Entferne den aktuellen Tag (alles nach dem ':') und setze 'latest' als neuen Tag
+            if ':' in image_name:
+                image_name_latest = image_name.split(':')[0] + ':latest'
+            else:
+                image_name_latest = image_name + ':latest'
+
+            # Führe crane config aus, um die Konfigurationsinformationen für den latest Tag zu erhalten
+            remote_version_latest_info = subprocess.check_output(["crane", "config", image_name_latest])
+            remote_version_latest = json.loads(remote_version_latest_info)['config']['Labels'].get(
+                "org.opencontainers.image.version", "unknown")
+
+            print("Debug | Remote Version latest: " + remote_version_latest)
+            return remote_version_latest
+
+        except Exception as e:
+            print(f"Error fetching remote version latest info: {e}")
+            return None

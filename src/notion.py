@@ -43,31 +43,40 @@ class Notion:
 
             local_digest, local_tag, local_version = Container().get_local_image_digest(container["image"])
             remote_digest, remote_version = Container().get_remote_image_info(container["image"])
+            remote_version_latest = Container().get_remote_image_latest(container["image"])
 
             # Vergleich der Digests und Versionen
             needs_update = local_digest != remote_digest if local_digest and remote_digest else True
             newer_version_available = (
-                current_tag != "latest" and remote_version != local_version
+                current_tag != "latest" and remote_version_latest != local_version
             ) if remote_version and local_version else False
 
             # Notion-Seite suchen oder erstellen
             page_id = self.find_notion_page_id(container["name"], socket.gethostname())
 
+            # Bestimme den Wert für "New Version"
+            if newer_version_available:
+                new_version = remote_version_latest
+            elif needs_update:
+                new_version = remote_version
+            else:
+                new_version = None
+
             properties = {
-                "Container Name": {"title": [{"text": {"content": container["name"]}}]},
-                "Server Name": {"rich_text": [{"text": {"content": socket.gethostname()}}]},
-                "Image": {"rich_text": [{"text": {"content": container["image"]}}]},
+                "Container Name": {"title": [{"text": {"content": container["name"] or "unknown"}}]},
+                "Server Name": {"rich_text": [{"text": {"content": socket.gethostname() or "unknown"}}]},
+                "Image": {"rich_text": [{"text": {"content": container["image"] or "unknown"}}]},
                 "Current Tag": {"rich_text": [{"text": {"content": current_tag}}]},
-                "Current Version": {"rich_text": [{"text": {"content": local_version}}]},
+                "Current Version": {"rich_text": [{"text": {"content": local_version or "unknown"}}]},
                 "Local Digest": {"rich_text": [{"text": {"content": local_digest or 'unknown'}}]},
                 "Remote Digest": {"rich_text": [{"text": {"content": remote_digest or 'unknown'}}]},
                 "Needs Update": {"checkbox": needs_update},
-                "Newer Version Available": {"checkbox": newer_version_available},
+                "Newer Tag Available": {"checkbox": newer_version_available},
             }
 
             # Nur wenn ein Update benötigt wird, die Remote Version hinzufügen
-            if needs_update:
-                properties["New Version"] = {"rich_text": [{"text": {"content": remote_version or 'unknown'}}]}
+            if new_version:
+                properties["New Version"] = {"rich_text": [{"text": {"content": new_version or 'unknown'}}]}
 
             if page_id:
                 # Vorhandene Seite aktualisieren
