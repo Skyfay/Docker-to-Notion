@@ -2,20 +2,30 @@ import docker
 import requests
 import subprocess
 import json
+from config import Config
 
 class Container:
     def __init__(self) -> None:
         self.docker = docker.from_env()
+        self.excluded_images = Config().get("EXCLUDED_IMAGES") or []
 
     def get_running_containers(self) -> list:
         containers = self.docker.containers.list()
         container_data = []
+
         for container in containers:
+            image_name = container.image.tags[0] if container.image.tags else "N/A"
+
+            # Überprüfe, ob das Image in der Liste der ausgeschlossenen Images ist
+            if any(image_name.startswith(excluded) for excluded in self.excluded_images):
+                continue
+
             container_info = {
                 "name": container.name,
-                "image": container.image.tags[0] if container.image.tags else "N/A"
+                "image": image_name
             }
             container_data.append(container_info)
+
         return container_data
 
 

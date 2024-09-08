@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 
 class Config:
     def __init__(self) -> None:
@@ -10,6 +11,11 @@ class Config:
         if value is None:
             logging.error(f"Environment variable {key} not set")
             raise KeyError(f"Environment variable {key} not set")
+
+        if key == "EXCLUDED_IMAGES":
+            # Parse JSON array
+            return json.loads(value)
+
         return value
 
 #class Config:
