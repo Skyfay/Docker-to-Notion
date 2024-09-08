@@ -15,7 +15,7 @@
 
 </div></h1>
 
-Docker images updates visualized in Notion.
+Docker image updates visualized and centralized in Notion.
 
 ## Features ✨
 
