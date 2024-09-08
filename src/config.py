@@ -16,6 +16,15 @@ class Config:
             # Parse JSON array
             return json.loads(value)
 
+        if key == "SYNC_INTERVAL":
+            # Parse the interval and ensure it is at least 300 seconds
+            try:
+                interval = int(value)
+                return max(interval, 300)  # Minimum interval is 300 seconds
+            except ValueError:
+                logging.error(f"Invalid value for {key}: {value}")
+                raise
+
         return value
 
 #class Config:

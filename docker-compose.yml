@@ -8,6 +8,7 @@ services:
       - NOTION_AUTH_TOKEN=your_notion_token
       - NOTION_DATABASE_ID=your_database_id
       - EXCLUDED_IMAGES=["skyfay/docker-to-notion"] # [] = exclude no images, ["image", "image2"] = exclude multiple images
+      - SYNC_INTERVAL=300  # the lowest value is 300 / 5 minutes
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/hostname:/etc/hostname:ro
