@@ -161,3 +161,4 @@ cython_debug/
 .run/
 Scripts/
 .DS_Store
+/docker-compose

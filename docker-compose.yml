@@ -4,6 +4,7 @@ services:
   app:
     image: skyfay/docker-to-notion:latest
     container_name: docker-to-notion
+    hostname: your-hostname
     environment:
       - NOTION_AUTH_TOKEN=your_notion_token
       - NOTION_DATABASE_ID=your_database_id
