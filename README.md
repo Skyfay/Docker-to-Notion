@@ -1,8 +1,6 @@
-<h1 align="center">Docker to Notion<br />
-<div align="center">
-<a href="https://github.com/skyfay/docker-to-notion"><img src="https://github.com/Skyfay/Docker-to-Notion/blob/main/.github/preview.png" title="Screenshot" style="max-width:100%;" width="832" /></a>
-</div>
-<div align="center">
+# Docker to Notion
+
+![preview](data/preview.png)
 
 ![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/Skyfay/Docker-to-Notion?label=Version)
 ![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/Skyfay/Docker-To-Notion)
@@ -13,17 +11,15 @@
 ![Discord](https://img.shields.io/discord/580801656707350529?label=Discord&color=%235865f2&link=https%3A%2F%2Fdiscord.com%2Finvite%2FYvgPyky)
 ![GitHub](https://img.shields.io/github/license/Skyfay/Docker-to-Notion)
 
-</div></h1>
-
 Docker image updates visualized and centralized in Notion.
 
 ## Features ✨
 
- - Get Images from the Docker Socket and send Updates to Notion
- - Exclude Images
- - Set a specific sync interval
+- Get Images from the Docker Socket and send Updates to Notion
+- Exclude Images
+- Set a specific sync interval
 
-## Usage  🐳
+## Usage 🐳
 
 Via Docker Compose:
 
@@ -45,8 +41,10 @@ services:
       - /etc/hostname:/etc/hostname:ro # Linux only instead use docker hostname above
     restart: unless-stopped
 ```
+
 Via Docker CLI:
-```
+
+```bash
 docker run -it --rm \
   --name docker-to-notion \
   --hostname your-hostname \
@@ -65,42 +63,37 @@ docker run -it --rm \
 
 Create a Notion Database and add the following columns:
 
-<img width="289" alt="image" src="https://github.com/user-attachments/assets/975d0803-659c-4836-a950-7e3ce421eb6d">
+![image](data/notion-props.png)
 
 It doesn't matter in which order, but the names and types must match exactly.
 
-| Type  | Name |
-| ------------- | ------------- |
-| Title  | Container Name  |
-| Text  | Server Name  |
-| Text  | Image  |
-| Text  | Current Tag  |
-| Text  | Current Version  |
-| Text  | New Version  |
-| Text  | Local Digest  |
-| Text  | Remote Digest  |
-| Checkbox | Needs Update  |
-| Checkbox | Newer Tag Available |
-
+Type     | Name
+-------- | -------------------
+Title    | Container Name
+Text     | Server Name
+Text     | Image
+Text     | Current Tag
+Text     | Current Version
+Text     | New Version
+Text     | Local Digest
+Text     | Remote Digest
+Checkbox | Needs Update
+Checkbox | Newer Tag Available
 
 ### How to get your Notion token?
-First of all go to your Notion intigrations: https://www.notion.so/profile/integrations
 
-1. Create a new intigration
-<img width="1205" alt="image" src="https://github.com/user-attachments/assets/ac192407-b50c-4da9-9935-e6b9dc7c1fc1">
+First of all go to your Notion intigrations: <https://www.notion.so/profile/integrations>
 
-2. Add a intigration name, select your workspace and save
-<img width="1375" alt="image" src="https://github.com/user-attachments/assets/b12bedde-50a6-46c5-9ea4-0605926977b3">
+1. Create a new intigration ![image](data/notion-integration_new.png)
 
-3. Go to the intigration and copy your Notion Token = Internal Integration Secret
-<img width="1340" alt="image" src="https://github.com/user-attachments/assets/7944b534-f41f-4316-96b9-ce90b968de0c">
+2. Add a intigration name, select your workspace and save ![image](data/notion-integration_create.png)
+
+3. Go to the intigration and copy your Notion Token = Internal Integration Secret ![image](data/notion-integration_secret.png)
 
 ### How to get the Notion database ID
 
-Visit Notion via Web Browser: https://www.notion.so/login
+Visit Notion via Web Browser: <https://www.notion.so/login>
 
-1. Go to your Database and open it full screen and copy the database ID from your WEB URL
-<img width="1672" alt="image" src="https://github.com/user-attachments/assets/82c5f228-2290-4b46-8fe9-57e0f59edd67">
+1. Go to your Database and open it full screen and copy the database ID from your WEB URL ![image](data/notion-db_id.png)
 
-2. Add the intigration you created to the notion database to give access
-<img width="1592" alt="image" src="https://github.com/user-attachments/assets/04f26280-c90e-43fc-8f54-ef0ceb712978">
+2. Add the intigration you created to the notion database to give access ![image](data/notions-connect.png)
