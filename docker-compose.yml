@@ -4,7 +4,7 @@ services:
   app:
     image: skyfay/docker-to-notion:latest
     container_name: docker-to-notion
-    hostname: your-hostname
+    hostname: your-hostname # Not needed if you use linux and /etc/hostname
     environment:
       - NOTION_AUTH_TOKEN=your_notion_token
       - NOTION_DATABASE_ID=your_database_id
@@ -12,5 +12,5 @@ services:
       - SYNC_INTERVAL=300  # the lowest value is 300 / 5 minutes
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/hostname:/etc/hostname:ro
+      - /etc/hostname:/etc/hostname:ro # Linux only instead use docker hostname above
     restart: unless-stopped
