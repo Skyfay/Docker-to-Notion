@@ -1,2 +1,4 @@
-docker==7.1.0
-notion-client==2.3.0
+docker==6.1.3
+requests==2.31.0
+packaging==23.2
+boto3==1.34.0

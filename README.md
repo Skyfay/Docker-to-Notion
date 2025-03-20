@@ -32,10 +32,18 @@ services:
     container_name: docker-to-notion
     hostname: your-hostname # Not needed if you use linux and /etc/hostname
     environment:
-      - NOTION_AUTH_TOKEN=your_notion_token
+      - NOTION_API_KEY=your_notion_api_key
       - NOTION_DATABASE_ID=your_database_id
       - EXCLUDED_IMAGES=["skyfay/docker-to-notion"] # [] = exclude no images, ["image", "image2"] = exclude multiple images
-      - SYNC_INTERVAL=300  # the lowest value is 300 / 5 minutes
+      - SYNC_INTERVAL=3600  # the lowest value is 300 / 5 minutes
+
+      # If you have images github container registry (ghcr)
+      - GITHUB_TOKEN=your_github_token # https://github.com/settings/tokens only need read:packages permission
+
+      # If you have images with aws container registry (ecr)
+      - AWS_ACCESS_KEY=your_aws_access_key
+      - AWS_SECRET_KEY=your_aws_secret_key
+      - AWS_REGION='eu-central-1'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/hostname:/etc/hostname:ro # Linux only instead use docker hostname above
@@ -47,13 +55,13 @@ Via Docker CLI:
 ```bash
 docker run -it --rm \
   --name docker-to-notion \
-  --hostname your-hostname \
-  -e NOTION_AUTH_TOKEN=your_notion_token \
-  -e NOTION_DATABASE_ID=your_database_id \
-  -e EXCLUDED_IMAGES='["skyfay/docker-to-notion"]' \
-  -e SYNC_INTERVAL=300 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc/hostname:/etc/hostname:ro \
+  -e NOTION_API_KEY="your_notion_api_key" \
+  -e NOTION_DATABASE_ID="your_database_id" \
+  -e CHECK_INTERVAL=3600 \
+  -e GITHUB_TOKEN="your_github_token" \
+  -e EXCLUDED_IMAGES='["skyfay/docker-to-notion"]' \
   skyfay/docker-to-notion:latest
 ```
 
@@ -69,16 +77,15 @@ It doesn't matter in which order, but the names and types must match exactly.
 
 Type     | Name
 -------- | -------------------
-Title    | Container Name
-Text     | Server Name
-Text     | Image
-Text     | Current Tag
-Text     | Current Version
-Text     | New Version
-Text     | Local Digest
-Text     | Remote Digest
-Checkbox | Needs Update
-Checkbox | Newer Tag Available
+Title    | Repository
+Text     | Server
+Text     | Tag
+Text     | Registry
+Text     | Image ID
+Text     | Size
+Text     | Update available
+
+I recommend optionally adding “Last edited time” by Notion.
 
 ### How to get your Notion token?
 
