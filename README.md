@@ -71,10 +71,6 @@ docker run -it --rm \
 
 Create a Notion Database and add the following columns:
 
-![image](data/notion-props.png)
-
-It doesn't matter in which order, but the names and types must match exactly.
-
 Type     | Name
 -------- | -------------------
 Title    | Repository
@@ -84,6 +80,8 @@ Text     | Registry
 Text     | Image ID
 Text     | Size
 Text     | Update available
+
+It doesn't matter in which order, but the names and types must match exactly.
 
 I recommend optionally adding “Last edited time” by Notion.
 
